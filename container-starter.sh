@@ -36,9 +36,5 @@ docker exec -it "$CONTAINER_NAME" apt-get install -y git
 
 # Install required packages inside the container
 docker exec -it "$CONTAINER_NAME" apt-get install -y sudo nano
-docker exec -it "$CONTAINER_NAME" adduser --gecos "" --disabled-password "$USER_NAME"
-docker exec -it "$CONTAINER_NAME" usermod -aG sudo "$USER_NAME"
-docker exec -it "$CONTAINER_NAME" bash -c "echo 'admin:$USER_PASS' | chpasswd"
-docker exec -it "$CONTAINER_NAME" su - "$USER_NAME"
-docker exec -it "$CONTAINER_NAME" sudo git clone "https://github.com/rdias66/sec-infra.git"
+docker exec -it "$CONTAINER_NAME" git clone "https://github.com/rdias66/sec-infra.git"
 
