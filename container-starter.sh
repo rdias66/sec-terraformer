@@ -14,27 +14,53 @@ check_docker() {
     fi
 }
 
+# Function to build Docker image
+build_docker_image() {
+    # Build the Docker image
+    docker build -t sec-infra-image .
+}
+
+# Function to start the container
+start_container() {
+    # Start the container
+    docker run -dit --name "$CONTAINER_NAME" -p "$PORTS" sec-infra-image
+}
+
+# Function to install Go inside the container
+install_go() {
+    docker exec -it "$CONTAINER_NAME" apt-get update
+    docker exec -it "$CONTAINER_NAME" apt-get install -y golang
+}
+
+# Function to install Git inside the container
+install_git() {
+    docker exec -it "$CONTAINER_NAME" apt-get install -y git
+}
+
+# Function to install required packages inside the container
+install_required_packages() {
+    docker exec -it "$CONTAINER_NAME" apt-get install -y sudo nano
+    docker exec -it "$CONTAINER_NAME" git clone "https://github.com/rdias66/sec-infra.git"
+}
+
 # Define variables
-DOCKER_IMAGE="ubuntu:latest"
 CONTAINER_NAME="ubuntu_server"
-USER_NAME="admin"
-USER_PASS="admin"
 PORTS="8080:22"
 
 # Check if Docker is installed
 check_docker
 
+# Build Docker image
+build_docker_image
+
 # Start the container
-docker run -dit --name "$CONTAINER_NAME" -p "$PORTS" "$DOCKER_IMAGE"
+start_container
 
 # Install Go inside the container
-docker exec -it "$CONTAINER_NAME" apt-get update
-docker exec -it "$CONTAINER_NAME" apt-get install -y golang
+install_go
 
-# Install Git inside the container 
-docker exec -it "$CONTAINER_NAME" apt-get install -y git
+# Install Git inside the container
+install_git
 
 # Install required packages inside the container
-docker exec -it "$CONTAINER_NAME" apt-get install -y sudo nano
-docker exec -it "$CONTAINER_NAME" git clone "https://github.com/rdias66/sec-infra.git"
-
+install_required_packages
