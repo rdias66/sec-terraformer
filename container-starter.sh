@@ -43,8 +43,8 @@ install_required_packages() {
     docker exec -it "$CONTAINER_NAME" git clone "https://github.com/rdias66/sec-infra.git"
 }
 
-# Define variables
-CONTAINER_NAME="ubuntu_server"
+# Define container name + ports * define further later.
+CONTAINER_NAME="sec-env"
 PORTS="8080:22"
 
 # Check if Docker is installed
